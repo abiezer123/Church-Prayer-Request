@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prayer Connect</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            🙏 Prayer Connect
+        </div>
+
+        <nav>
+            <a href="#" class="active">Prayer Requests</a>
+            <a href="#">Confession Wall</a>
+            <a href="#">Suggestions</a>
+        </nav>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="container">
+
+
+        <!-- Introduction -->
+        <section class="hero">
+            <span class="hero-icon">🙏</span>
+
+            <h1>How can we pray for you?</h1>
+
+            <p>
+                You don't have to carry everything alone.
+                Share your prayer request with our church youth community.
+            </p>
+        </section>
+
+
+        <!-- Prayer Request Form -->
+        <section class="card">
+
+            <h2>Submit a Prayer Request</h2>
+
+            <p class="description">
+                Share what's on your heart. You can choose who can see your prayer request.
+            </p>
+
+
+            <form id="submit-prayer">
+
+                <!-- Name -->
+                <div class="form-group">
+
+                    <label for="name">
+                        Your Name
+                        <span class="optional">(Optional)</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                    >
+
+                </div>
+
+
+                <!-- Prayer Request -->
+                <div class="form-group">
+
+                    <label for="prayer">
+                        Prayer Request
+                    </label>
+
+                    <textarea
+                        id="prayer"
+                        name="prayer"
+                        rows="6"
+                        placeholder="Write your prayer request here..."
+                        
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Visibility -->
+                <div class="form-group">
+
+                    <label>
+                        Who can see your prayer request?
+                    </label>
+
+
+                    <div class="visibility-options">
+
+                        <!-- Public Option -->
+                        <label class="visibility-card">
+
+                            <input
+                                type="radio"
+                                name="visibility"
+                                value="public"
+                                checked
+                            >
+
+                            <div class="visibility-content">
+
+                                <span class="visibility-icon">
+                                    🌎
+                                </span>
+
+                                <div>
+                                    <strong>Visible to Everyone</strong>
+
+                                    <p>
+                                        Your prayer can appear on the public
+                                        prayer wall for others to pray for you.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </label>
+
+
+                        <!-- Private Option -->
+                        <label class="visibility-card">
+
+                            <input
+                                type="radio"
+                                name="visibility"
+                                value="private"
+                            >
+
+                            <div class="visibility-content">
+
+                                <span class="visibility-icon">
+                                    🔒
+                                </span>
+
+                                <div>
+                                    <strong>Private</strong>
+
+                                    <p>
+                                        Only authorized church leaders can
+                                        see your prayer request.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Anonymous -->
+                <div class="anonymous-option">
+
+                    <label class="checkbox-container">
+
+                        <input
+                            type="checkbox"
+                            name="anonymous"
+                        >
+
+                        <span class="checkmark"></span>
+
+                        <div>
+                            <strong>Submit anonymously</strong>
+
+                            <p>
+                                Your name will not be displayed publicly.
+                            </p>
+                        </div>
+
+                    </label>
+
+                </div>
+
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="submit-button"
+                    id="submit-button"
+                >
+                    Submit Prayer Request
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- Prayer Wall Preview -->
+        <section class="prayer-wall" id="prayer-wall">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>Prayer Wall</h2>
+
+                    <p>
+                        Pray with and for our church youth community.
+                    </p>
+                </div>
+
+                <span class="prayer-count">
+                    12 Requests
+                </span>
+
+            </div>
+
+
+            <!-- Prayer Card -->
+            <article class="prayer-card">
+
+                <div class="prayer-card-header">
+
+                    <div class="user-info">
+
+                        <div class="avatar">
+                            A
+                        </div>
+
+                        <div>
+                            <strong>Anonymous</strong>
+
+                            <span>2 hours ago</span>
+                        </div>
+
+                    </div>
+
+                    <span class="public-label">
+                        🌎 Public
+                    </span>
+
+                </div>
+
+
+                <p class="prayer-text">
+                    Please pray for my family as we go through
+                    a difficult time. I hope that we can stay strong
+                    and trust God through everything.
+                </p>
+
+
+                <div class="prayer-card-footer">
+
+                    <button class="pray-button">
+                        🙏 I'm Praying
+                    </button>
+
+                    <span class="pray-count">
+                        8 people are praying
+                    </span>
+
+                </div>
+
+            </article>
+
+
+            <!-- Another Prayer Card -->
+            <article class="prayer-card">
+
+                <div class="prayer-card-header">
+
+                    <div class="user-info">
+
+                        <div class="avatar">
+                            J
+                        </div>
+
+                        <div>
+                            <strong>Joshua</strong>
+
+                            <span>Yesterday</span>
+                        </div>
+
+                    </div>
+
+                    <span class="public-label">
+                        🌎 Public
+                    </span>
+
+                </div>
+
+
+                <p class="prayer-text">
+                    Please pray for my upcoming exams.
+                    I pray that God will give me wisdom,
+                    strength, and peace.
+                </p>
+
+
+                <div class="prayer-card-footer">
+
+                    <button class="pray-button">
+                        🙏 I'm Praying
+                    </button>
+
+                    <span class="pray-count">
+                        15 people are praying
+                    </span>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <p>
+            Prayer Connect · A safe space for our church youth community
+        </p>
+
+    </footer>
+
+    <script src="/script.js"></script>
+
+</body>
+</html>
+
