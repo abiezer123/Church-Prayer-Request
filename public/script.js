@@ -1,4 +1,3 @@
-// const { text } = require("express");
 
 
 
@@ -11,15 +10,44 @@ const prayerWall = document.getElementById("prayer-wall");
 const prayersData = [];
 let n = 0;
 
+
+document.addEventListener("DOMContentLoaded",async ()=>{
+   const data = await getData();
+   getPrayerRequest(data);
+})
+
+
+async function getData(){
+   try{
+      const result = await fetch("http://localhost:3000/api/prayer");
+
+      if(!result.ok){
+         throw new Error(`Response status: ${result.status}`);
+      } 
+
+     return result.json();
+      
+      
+   } catch (error){
+      console.error(error.message);
+   }
+}
+
+
+
 submitPrayer.addEventListener("submit", async function(){
     
    
     event.preventDefault();
-    await postPrayerRequest();
+
+
     
-    if(prayersData[n].visibility === "public"){getPrayerRequest();};
+
+   //  await postPrayerRequest();
     
-    n++;
+   //  if(prayersData[n].visibility === "public"){getPrayerRequest();};
+    
+   //  n++;
 })
 
 function postPrayerRequest(){
@@ -38,7 +66,8 @@ function postPrayerRequest(){
 
 }
 
-function getPrayerRequest(){
+function getPrayerRequest(data){
+
 
    const newPrayerCard = document.createElement("article");
    newPrayerCard.classList.add("prayer-card");
@@ -55,18 +84,18 @@ function getPrayerRequest(){
    const newAvatar = document.createElement("div");
    newAvatar.classList.add("avatar");
    newUserInfo.appendChild(newAvatar);
-   newAvatar.textContent = prayersData[n].name[n].toUpperCase();
+   newAvatar.textContent = data[0].name[0].toUpperCase();
 
    const newDiv = document.createElement("div");
    newUserInfo.appendChild(newDiv);
 
    const newName = document.createElement("strong");
    newDiv.appendChild(newName);
-   newName.textContent = prayersData[n].name; 
+   newName.textContent = data[0].name; 
 
-   const newTime = document.createElement("span");
-   newDiv.appendChild(newTime);
-   newTime.textContent = prayersData[n].time;
+   // const newTime = document.createElement("span");
+   // newDiv.appendChild(newTime);
+   // newTime.textContent = prayersData[n].time;
 
    const newPublicLabel = document.createElement("span");
    newPublicLabel.classList.add("public-label");
@@ -76,7 +105,8 @@ function getPrayerRequest(){
    const newPrayerText = document.createElement("prayer-text");
    newPrayerText.classList.add("prayer-text");
    newPrayerCard.appendChild(newPrayerText);
-   newPrayerText.textContent = prayersData[n].prayerRequest;
+   newPrayerText.textContent = data[0].prayer;
+   // prayersData[n].prayerRequest
 
 
    
