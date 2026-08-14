@@ -61,6 +61,22 @@ app.delete("/api/delete/:id", async (req,res)=>{
     }
 })
 
+// app.delete("/api/deleteMany",(req,res)=>{
+//     try{
+//     const result = pool.query("DELETE FROM sample WHERE name ='' ")
+//     res.status(200).json({
+//         message: "succefully deleted",
+//         delete: result.rowCount
+//     })
+//     }catch (error){
+//         console.error(error);
+//         res.status(500).json({
+//             message: "failed to delete"
+//         })
+//     }
+// })
+
+
 app.listen(port,()=>{
     console.log(`server is running in ${port}`);
     console.log("http://localhost:3000")
