@@ -106,7 +106,7 @@ submitPrayer.addEventListener("submit", async function(){
    event.preventDefault();   
    
    postData();
-   alert("sent succesfulyy");
+   alert("sent succesfully");
    name.value = "";
    prayerRequest.value = "";
    loadPrayersPublic();
@@ -157,8 +157,9 @@ function getPrayerRequest(data){
 
          <div class="prayer-card-footer">
 
-         <button class="pray-button">
-         🙏 I'm Praying
+        <button class="pray-button" data-id="${prayer.id}">
+            🙏 I'm Praying
+            
          </button>
 
          <button class="delete-prayer" data-id=${prayer.id}>
@@ -166,8 +167,8 @@ function getPrayerRequest(data){
          </button>   
 
          <span class="pray-count">
-            15 people are praying
-         </span>
+            ${prayer.pray_count || 0} people are praying
+         </span>  
 
       </div>
    `
@@ -175,6 +176,32 @@ function getPrayerRequest(data){
 
 
    
+}
+
+async function prayForPrayer(id) {
+    try {
+        console.log("Praying for:", id);
+
+        const response = await fetch(
+            `http://localhost:3000/api/prayer/${id}/pray`,
+            {
+                method: "PATCH"
+            }
+        );
+
+        const data = await response.json();
+
+        console.log("Server response:", data);
+
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to pray");
+        }
+
+        return data;
+
+    } catch (error) {
+        console.error("PRAY ERROR:", error.message);
+    }
 }
 
 function formatTime(dateString) {
@@ -284,7 +311,24 @@ async function deletePrayer(id){
 
 prayerWall.addEventListener("click", async (event) => {
 
-    if (event.target.classList.contains("delete-prayer")) {
+   if (event.target.closest(".pray-button")) {
+
+    const button = event.target.closest(".pray-button");
+    const id = button.dataset.id;
+
+    const data = await prayForPrayer(id);
+
+    if (data) {
+
+        const card = button.closest(".prayer-card");
+        const count = card.querySelector(".pray-count");
+
+        count.textContent =
+            `${data.pray_count} people are praying`;
+    }
+}
+    
+   if (event.target.classList.contains("delete-prayer")) {
 
         const id = event.target.dataset.id;
         const confirmDelete= confirm("are you sure you want to delete");

@@ -58,6 +58,44 @@ app.get("/api/prayerPublic", async (req,res)=>{
     }
 })
 
+app.patch("/api/prayer/:id/pray", async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        console.log("Pray request for ID:", id);
+
+        const result = await pool.query(
+            `UPDATE prayers
+             SET pray_count = COALESCE(pray_count, 0) + 1
+             WHERE id = $1
+             RETURNING pray_count`,
+            [id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                message: "Prayer not found"
+            });
+        }
+
+        console.log("New count:", result.rows[0].pray_count);
+
+        res.json({
+            pray_count: result.rows[0].pray_count
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            message: "Failed to pray"
+        });
+    }
+});
+
 app.delete("/api/delete/:id", async (req,res)=>{
 
     try{
