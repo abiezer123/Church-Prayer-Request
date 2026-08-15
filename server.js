@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const path = require("path");
 
 
 const pool = require("./config/database");
@@ -10,8 +11,9 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
+
 app.get("/", (req, res) => {
-    res.send("Prayer Request API is working!");
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.post("/api/prayer", async (req,res)=>{
