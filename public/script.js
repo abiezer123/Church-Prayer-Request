@@ -43,7 +43,7 @@ async function loadPrayersPublic(){
 //data for the public
 async function getDataPublic(){
    try{
-      const response = await fetch("http://localhost:3000/api/prayerPublic")
+      const response = await fetch("/api/prayerPublic")
       if(!response.ok){
          throw new Error(`Response status ${response.status}`);
       }
@@ -57,7 +57,7 @@ async function getDataPublic(){
 
 async function getData(){
    try{
-      const result = await fetch("http://localhost:3000/api/prayer");
+      const result = await fetch("/api/prayer");
 
       if(!result.ok){
          throw new Error(`Response status: ${result.status}`);
@@ -78,7 +78,7 @@ async function postData(){
       const visi = visibilityFunction();
       const now = new Date();
       
-      const response = await fetch("http://localhost:3000/api/prayer",{
+      const response = await fetch("/api/prayer",{
          method: "POST",
          headers: {
             "Content-Type":"application/json"
@@ -183,7 +183,7 @@ async function prayForPrayer(id) {
         console.log("Praying for:", id);
 
         const response = await fetch(
-            `http://localhost:3000/api/prayer/${id}/pray`,
+            `/api/prayer/${id}/pray`,
             {
                 method: "PATCH"
             }
@@ -291,7 +291,7 @@ function formatTime(dateString) {
 
 async function deletePrayer(id){
    try{
-      const response = await fetch(`http://localhost:3000/api/delete/${id}`,{
+      const response = await fetch(`/api/delete/${id}`,{
          method: "DELETE"
       })
 

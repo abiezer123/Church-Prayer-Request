@@ -10,6 +10,10 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
+app.get("/", (req, res) => {
+    res.send("Prayer Request API is working!");
+});
+
 app.post("/api/prayer", async (req,res)=>{
 
     try{
