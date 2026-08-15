@@ -7,18 +7,52 @@ const anonymousInput = document.querySelector('input[name="anonymous"]');
 const submitPrayer = document.getElementById("submit-prayer");
 const prayerWall = document.getElementById("prayer-wall");
 
+function visibilityFunction(){
+   const visibility = document.querySelector('input[name="visibility"]:checked');
+   return visibility.value
+   
+}
 
 document.addEventListener("DOMContentLoaded",async ()=>{
-   loadPrayers();
+
+   loadPrayersPublic();
 
 
 })
+
+
 
 
 async function loadPrayers(){
    prayerWall.innerHTML = ""
    const data = await getData();
    getPrayerRequest(data);
+}
+
+async function loadPrayersPublic(){
+   
+   const request = document.getElementsByClassName("prayer-count");
+
+   prayerWall.innerHTML = ""
+   const data = await getDataPublic();
+   getPrayerRequest(data);
+   
+   
+}
+
+//data for the public
+async function getDataPublic(){
+   try{
+      const response = await fetch("http://localhost:3000/api/prayerPublic")
+      if(!response.ok){
+         throw new Error(`Response status ${response.status}`);
+      }
+      return response.json();
+   }catch(error){
+      console.error(error.message)
+      
+   }
+
 }
 
 async function getData(){
@@ -38,7 +72,11 @@ async function getData(){
 }
 
 async function postData(){
+   
    try{
+
+      const visi = visibilityFunction();
+      const now = new Date();
       
       const response = await fetch("http://localhost:3000/api/prayer",{
          method: "POST",
@@ -47,7 +85,9 @@ async function postData(){
          },
          body: JSON.stringify({
             name : name.value,
-            prayer : prayerRequest.value
+            prayer : prayerRequest.value,
+            visibility: visi,
+            date: now,
          })
 
       })
@@ -62,33 +102,21 @@ async function postData(){
 
 //SUBMIT BUTTON CLICK
 submitPrayer.addEventListener("submit", async function(){
-    
-   event.preventDefault();
-
+  
+   event.preventDefault();   
+   
    postData();
-   alert("sent succesfulyy")
+   alert("sent succesfulyy");
    name.value = "";
    prayerRequest.value = "";
-   loadPrayers()
+   loadPrayersPublic();
    
 })
 
-// function postPrayerRequest(){
-   
-//    const visibility = document.querySelector('input[name="visibility"]:checked');
-   
-//    prayersData.push({
-//     name: name.value,
-//     prayerRequest: prayerRequest.value,
-//     visibility: visibility.value,
-//     anonymousInpt: anonymousInput.checked,
-
-//    })
-
   
 
-// }
 
+//creting new Prayer Cards
 function getPrayerRequest(data){
 
    data.forEach(prayer=>{
@@ -110,7 +138,7 @@ function getPrayerRequest(data){
          <div>
             <strong>${prayer.name}</strong>
 
-            <span>Yesterday</span>
+            <span>${formatTime(prayer.created_at)}</span>
          </div>
 
          </div>
@@ -144,6 +172,53 @@ function getPrayerRequest(data){
       </div>
    `
    })
+
+
+   
+}
+
+function formatTime(dateString) {
+    const date = new Date(dateString);
+
+    if (isNaN(date.getTime())) {
+        return "Invalid date";
+    }
+
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    if (seconds < 60) {
+        return "Just now";
+    }
+
+    const minutes = Math.floor(seconds / 60);
+
+    if (minutes < 60) {
+        return `${minutes} minute${minutes === 1 ? "" : "s"} ago`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+
+    if (hours < 24) {
+        return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+    }
+
+    const days = Math.floor(hours / 24);
+
+    if (days === 1) {
+        return "Yesterday";
+    }
+
+    if (days < 7) {
+        return `${days} days ago`;
+    }
+
+    return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+    });
+}
  
    // const newPrayerCardHeader = document.createElement("div");
    // newPrayerCardHeader.classList.add("prayer-card-header");
@@ -185,7 +260,7 @@ function getPrayerRequest(data){
    // deleteButton.textContent = "delete";
    
    
-}
+
 
 async function deletePrayer(id){
    try{
@@ -212,10 +287,16 @@ prayerWall.addEventListener("click", async (event) => {
     if (event.target.classList.contains("delete-prayer")) {
 
         const id = event.target.dataset.id;
+        const confirmDelete= confirm("are you sure you want to delete");
+        
+        if(confirmDelete == true){
+            await deletePrayer(id);
+            alert("deleted");
+            loadPrayers();
+        }else(alert("canceled"));
 
-        await deletePrayer(id);
-        alert("deleted");
-        loadPrayers();
+        
+        
        
     }
 
@@ -268,8 +349,3 @@ prayerWall.addEventListener("click", async (event) => {
 // }
 
 
-
-
-
-
-    

@@ -13,9 +13,10 @@ app.use(express.static("public"));
 app.post("/api/prayer", async (req,res)=>{
 
     try{
-        const {name,prayer} = req.body;
+        const {name,prayer,visibility,date} = req.body;
+        const newName = name.trim() === "" ? "Anonymous" : name;
         const result = await pool.query(
-            "INSERT INTO sample (name, prayer) VALUES ($1,$2)",[name, prayer]
+            "INSERT INTO prayers (name, prayer,visibility,created_at) VALUES ($1,$2,$3,$4)",[newName, prayer,visibility,date]
         )
 
         res.status(201).json("successfully added")
@@ -33,7 +34,7 @@ app.get("/api/prayer", async (req,res)=>{
 
     try{
         const results = await pool.query(
-        "SELECT * FROM sample"
+        "SELECT * FROM prayers"
         )
         console.log(results.rows);
         res.status(200).json(results.rows)
@@ -44,11 +45,24 @@ app.get("/api/prayer", async (req,res)=>{
     }
 })
 
+app.get("/api/prayerPublic", async (req,res)=>{
+    try{
+        const results = await pool.query("SELECT * FROM prayers WHERE visibility = 'public' ORDER BY created_at DESC");
+        console.log(results.rows);
+        res.status(200).json(results.rows);
+    }catch(error){
+        console.error(error);
+        res.status(500).json({
+            message : "failed to get data"
+        })
+    }
+})
+
 app.delete("/api/delete/:id", async (req,res)=>{
 
     try{
         const id = req.params.id;
-        const result = pool.query("DELETE FROM sample WHERE id = $1", [id]);
+        const result = pool.query("DELETE FROM prayers WHERE id = $1", [id]);
         res.json({
             message:`succesfully deleted`,
             deleted: result.rowCount,
@@ -63,7 +77,7 @@ app.delete("/api/delete/:id", async (req,res)=>{
 
 // app.delete("/api/deleteMany",(req,res)=>{
 //     try{
-//     const result = pool.query("DELETE FROM sample WHERE name ='' ")
+//     const result = pool.query("DELETE FROM Prayers WHERE name ='' ")
 //     res.status(200).json({
 //         message: "succefully deleted",
 //         delete: result.rowCount
