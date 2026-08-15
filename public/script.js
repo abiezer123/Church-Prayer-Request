@@ -311,22 +311,41 @@ async function deletePrayer(id){
 
 prayerWall.addEventListener("click", async (event) => {
 
-   if (event.target.closest(".pray-button")) {
+    if (event.target.closest(".pray-button")) {
 
-    const button = event.target.closest(".pray-button");
-    const id = button.dataset.id;
+        const button = event.target.closest(".pray-button");
+        const id = button.dataset.id;
 
-    const data = await prayForPrayer(id);
+        // Check if this device already prayed
+        const alreadyPrayed = localStorage.getItem(`prayed_${id}`);
 
-    if (data) {
+        if (alreadyPrayed) {
+            alert("You are already praying for this request.");
+            return;
+        }
 
-        const card = button.closest(".prayer-card");
-        const count = card.querySelector(".pray-count");
+        // Send to database
+        const data = await prayForPrayer(id);
 
-        count.textContent =
-            `${data.pray_count} people are praying`;
+        if (data) {
+
+            // Save that this device already prayed
+            localStorage.setItem(`prayed_${id}`, "true");
+
+            // Update count
+            const card = button.closest(".prayer-card");
+            const count = card.querySelector(".pray-count");
+
+            count.textContent =
+                `${data.pray_count} people are praying`;
+
+            // Disable button
+            button.disabled = true;
+            button.textContent = "🙏 Praying";
+        }
     }
-}
+
+
     
    if (event.target.classList.contains("delete-prayer")) {
 

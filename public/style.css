@@ -439,15 +439,58 @@ textarea:focus {
 }
 
 .prayer-card-footer {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
 
     border-top: 1px solid #f0f0f3;
-
     padding-top: 15px;
 }
 
+.pray-button {
+    justify-self: start;
+}
+
+
+
+.delete-prayer {
+    justify-self: center;
+    border: 1px solid #fecaca;
+    background-color: #fef2f2;
+    color: #dc2626;
+
+    border-radius: 8px;
+    padding: 9px 14px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.delete-prayer:hover {
+    background-color: #dc2626;
+    color: white;
+    border-color: #dc2626;
+
+    box-shadow: 0 4px 8px rgba(220, 38, 38, 0.2);
+}
+
+.delete-prayer:active {
+    transform: scale(0.97);
+}
+
+.pray-count {
+    justify-self: end;
+
+    color: #6b7280;
+    font-size: 12px;
+    white-space: nowrap;
+}
 .pray-button {
     border: none;
 
@@ -489,6 +532,7 @@ textarea:focus {
 
 
 @media (max-width: 700px) {
+    
 
     .navbar {
         flex-direction: column;
