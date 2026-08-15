@@ -100,7 +100,7 @@ app.delete("/api/delete/:id", async (req,res)=>{
 
     try{
         const id = req.params.id;
-        const result = pool.query("DELETE FROM prayers WHERE id = $1", [id]);
+        const result = await pool.query("DELETE FROM prayers WHERE id = $1", [id]);
         res.json({
             message:`succesfully deleted`,
             deleted: result.rowCount,
@@ -115,7 +115,7 @@ app.delete("/api/delete/:id", async (req,res)=>{
 
 // app.delete("/api/deleteMany",(req,res)=>{
 //     try{
-//     const result = pool.query("DELETE FROM Prayers WHERE name ='' ")
+//     const result = awati pool.query("DELETE FROM Prayers WHERE name ='' ")
 //     res.status(200).json({
 //         message: "succefully deleted",
 //         delete: result.rowCount
@@ -129,7 +129,10 @@ app.delete("/api/delete/:id", async (req,res)=>{
 // })
 
 
-app.listen(port,()=>{
-    console.log(`server is running in ${port}`);
-    console.log("http://localhost:3000")
-})
+// app.listen(port,()=>{
+//     console.log(`server is running in ${port}`);
+//     console.log("http://localhost:3000")
+// })
+
+
+module.exports = app;
